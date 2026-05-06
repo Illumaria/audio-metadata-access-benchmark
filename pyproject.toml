@@ -1,0 +1,32 @@
+[project]
+name = "python-audio-loading-benchmark"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12,<3.14"
+dependencies = [
+    "cyclopts>=4.11.2",
+    "loguru>=0.7.3",
+    "scipy>=1.17.1",
+    "seaborn>=0.13.2",
+    "torch>=2.11.0",
+]
+
+[dependency-groups]
+audio = [
+    "audioread>=3.1.0",
+    "librosa>=0.11.0",
+    "miniaudio>=1.71",
+    "mutagen>=1.47.0",
+    "pedalboard>=0.9.22",
+    "pydub>=0.25.1",
+    "pyogg>=0.6.14a1",
+    "soundfile>=0.13.1",
+    "sox>=1.5.0",
+    "stempeg>=0.2.6",
+    "tinytag>=2.2.1",
+    "torchcodec>=0.11.1",
+]
+dev = [
+    "ruff>=0.15.12",
+]
