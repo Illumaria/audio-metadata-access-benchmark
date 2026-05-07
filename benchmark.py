@@ -5,14 +5,13 @@ import pandas as pd
 from cyclopts import App
 from loguru import logger
 
-from src import loaders
 from src.constants import (
     AUDIO_DIR,
     DATAFRAME_COLUMNS,
     DEFAULT_AUDIO_EXTENSION,
-    LIB_NAMES,
     RESULTS_DIR,
 )
+from src.loaders import LOADERS, LoaderSpec
 from src.utils import DataFrameWriter, list_files, plot_results
 
 app = App()
@@ -22,16 +21,15 @@ class AudioFolder:
     def __init__(
         self,
         root: str,
+        loader: LoaderSpec,
         extension: str = "wav",
-        lib: str = "librosa",
     ) -> None:
         self.root = os.path.expanduser(root)
-        self.data = []
         self.audio_files = list_files(src_dir=self.root, src_ext=extension)
-        self.loader_function = getattr(loaders, lib)
+        self.loader = loader
 
     def __getitem__(self, index: int) -> tuple[float, float]:
-        return self.loader_function(self.audio_files[index])
+        return self.loader.get_info(self.audio_files[index])
 
     def __len__(self) -> int:
         return len(self.audio_files)
@@ -44,15 +42,19 @@ def run(
     """Execute benchmark for a run, printing logs to stdout"""
     store = DataFrameWriter(columns=DATAFRAME_COLUMNS)
 
-    for lib in LIB_NAMES:
-        logger.info("Testing: %s" % lib)
+    for loader in LOADERS.values():
+        if ext not in loader.extensions:
+            logger.info("Skipping %s (does not support .%s)" % (loader.name, ext))
+            continue
+
+        logger.info("Testing: %s" % loader.name)
 
         for root, dirs, _ in sorted(os.walk(AUDIO_DIR)):
             for audio_dir in dirs:
                 duration = int(audio_dir)
                 dataset = AudioFolder(
                     os.path.join(root, audio_dir),
-                    lib="info_" + lib,
+                    loader=loader,
                     extension=ext,
                 )
 
@@ -60,13 +62,13 @@ def run(
 
                 for _ in range(3):
                     for fp in dataset.audio_files:
-                        _ = dataset.loader_function(fp)
+                        _ = dataset.loader.get_info(fp)
 
                 end = time.monotonic()
                 store.append(
                     row=dict(
                         ext=ext,
-                        lib=lib,
+                        lib=loader.name,
                         duration=duration,
                         time=float(end - start) / (len(dataset) * 3),
                     ),

@@ -3,6 +3,10 @@ from pathlib import Path
 import pyogg
 
 
+NAME: str = "pyogg"
+SUPPORTED_EXTENSIONS: frozenset[str] = frozenset({})
+
+
 def get_info(path: Path) -> tuple[float, float]:
     opus_file = pyogg.OpusFile(path)
 

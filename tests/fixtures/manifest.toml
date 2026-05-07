@@ -1,0 +1,13 @@
+# Known-good metadata for fixture audio files in tests/fixtures/audio/.
+# Tests assert each loader returns these values for each file.
+# Add an entry per file you drop into tests/fixtures/audio/.
+
+[[fixtures]]
+file = "whitenoise_1s_48k.opus"
+duration = 1.0
+sample_rate = 48000
+
+[[fixtures]]
+file = "whitenoise_11s_48k.opus"
+duration = 11.0
+sample_rate = 48000

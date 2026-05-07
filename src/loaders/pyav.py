@@ -3,6 +3,10 @@ from pathlib import Path
 import av
 
 
+NAME: str = "pyav"
+SUPPORTED_EXTENSIONS: frozenset[str] = frozenset({"opus"})
+
+
 def get_info(path: Path) -> tuple[float, float]:
     container = av.open(file=path)
     stream = container.streams.audio[0]

@@ -3,6 +3,10 @@ import subprocess
 from pathlib import Path
 
 
+NAME: str = "ffprobe"
+SUPPORTED_EXTENSIONS: frozenset[str] = frozenset({"opus"})
+
+
 def get_info(path: Path) -> tuple[float, float]:
     """Return duration in seconds and sample rate. Raises on failure."""
     cmd = [

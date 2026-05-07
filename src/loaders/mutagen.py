@@ -9,6 +9,10 @@ from mutagen.oggopus import (
 from mutagen._file import StreamInfo
 
 
+NAME: str = "mutagen"
+SUPPORTED_EXTENSIONS: frozenset[str] = frozenset({"opus"})
+
+
 class OggOpusInfo(StreamInfo):
     length = 0.0
     channels = 0

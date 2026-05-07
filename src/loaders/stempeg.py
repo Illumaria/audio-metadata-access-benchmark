@@ -3,6 +3,10 @@ from pathlib import Path
 import stempeg
 
 
+NAME: str = "stempeg"
+SUPPORTED_EXTENSIONS: frozenset[str] = frozenset({"opus"})
+
+
 def get_info(path: Path) -> tuple[float, float]:
     info = stempeg.Info(filename=path)
     duration = info.duration(0)

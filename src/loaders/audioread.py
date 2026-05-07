@@ -3,6 +3,10 @@ from pathlib import Path
 import audioread
 
 
+NAME: str = "audioread"
+SUPPORTED_EXTENSIONS: frozenset[str] = frozenset({"opus"})
+
+
 def get_info(path: Path) -> tuple[float, float]:
     duration, sample_rate = 0.0, 0.0
 
